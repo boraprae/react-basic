@@ -42,13 +42,13 @@ function App2() {
     setFruits(newData);
   };
 
-  const editFruit = (fruitName, id) => {
+  const editFruit = () => {
     const newData = fruits.map((fruit, index) => {
-      if(fruit.id === id){
-        return {...fruit, name: fruitName};
-      }
-    })
-  }
+      return { ...fruit, name: "fruitName" };
+    });
+    setFruits(newData);
+    console.log(newData);
+  };
 
   return (
     <>
@@ -67,7 +67,7 @@ function App2() {
           <div className="fruit-item" key={fruit.id}>
             <h2>{fruit.name}</h2>
             <button onClick={() => deleteFruit(fruit.id)}>Delete</button>
-            <button>Edit</button>
+            <button onClick={editFruit}>Edit</button>
           </div>
         );
       })}
