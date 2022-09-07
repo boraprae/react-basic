@@ -1,3 +1,5 @@
+import * as React from "react";
+
 const Item = ({title,price}) => {
     return (
       <li>
@@ -12,6 +14,6 @@ const Item = ({title,price}) => {
 //         {title} <span>{price}</span>
 //       </li>
 //     );
-//   };
+//   };D
 
-  export default Item
+  export default Item;
