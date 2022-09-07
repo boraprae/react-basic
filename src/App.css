@@ -33,3 +33,10 @@ body{
   margin: 30px auto;
   width: 350px;
 }
+
+.fruit-item{
+  border: 2px solid pink;
+  margin: 6px;
+  padding: 10px;
+  border-radius: 5px;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App'
+import App2 from './App2';
 import reportWebVitals from './reportWebVitals';
 import HelloComponent from './components/HelloComponent'
 
@@ -20,7 +21,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
 //<HelloComponent/>
- <App/>
+//  <App/>
+  <App2/>
 );
 
 // If you want to start measuring performance in your app, pass a function
