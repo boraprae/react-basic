@@ -15,11 +15,13 @@ function App2() {
   // });
   let [counter, setCounter] = React.useState(0);
   let [counterStatus, setCounterStatus] = React.useState(false);
+  let [addHiddle, setAddHiddle] = React.useState(true);
+  let [newFruit, setNewFruit] = React.useState("");
 
   const intitialState = [
-    { name: "banana", id: 100 },
-    { name: "apple", id: 101 },
-    { name: "orange", id: 102 },
+    { name: "banana", id: 100, picture: "/images/banana.jpg" },
+    { name: "apple", id: 101, picture: "/images/apple.jpg" },
+    { name: "orange", id: 102, picture: "/images/orange.jpg" },
   ];
   const [fruits, setFruits] = React.useState(intitialState);
 
@@ -50,6 +52,13 @@ function App2() {
     console.log(newData);
   };
 
+  const addFruit = () => {
+    //console.log(newFruit);
+    const newFruits =[...fruits];
+    newFruits.push({name: newFruit, picture:  "/images/banana.jpg", id: newFruits.length+101});
+    setFruits(newFruits);
+  };
+
   return (
     <>
       <button onClick={increase} disabled={counterStatus}>
@@ -61,11 +70,28 @@ function App2() {
       <br />
       <br />
       <h1>Fruits</h1>
-      <button>Add</button>
+      <div className="btnAddLayout">
+        <button className="btnAdd" onClick={() => setAddHiddle(!addHiddle)}>
+          Add
+        </button>
+        <div hidden={addHiddle}>
+          <input
+            type="text"
+            placeholder="Enter fruit..."
+            onChange={(e) => setNewFruit(e.target.value)}
+            value={newFruit}
+          />
+          <button onClick={addFruit}>OK</button>
+          <button onClick={() => setAddHiddle(!addHiddle)}>Cancel</button>
+        </div>
+      </div>
       {fruits.map((fruit) => {
         return (
           <div className="fruit-item" key={fruit.id}>
             <h2>{fruit.name}</h2>
+            <div className="avatar">
+              <img className="imgSize" src={fruit.picture} alt={fruit.name} />
+            </div>
             <button onClick={() => deleteFruit(fruit.id)}>Delete</button>
             <button onClick={editFruit}>Edit</button>
           </div>
