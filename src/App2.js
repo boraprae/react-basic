@@ -77,6 +77,8 @@ function App2() {
         <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
           Add
         </button>
+
+        </div>
         {!addHidden && (
           <>
             <Grid container justifyContent="flex-end">
@@ -89,33 +91,16 @@ function App2() {
                 value={newFruit}
                 fullWidth
               />
-              <button onClick={addFruit}>OK</button>
-              <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
+              
+              <Button variant="contained" onClick={addFruit}>OK</Button>
+              <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>Cancel</Button>
+              
+              
           </Grid>
           </>
         )}
-        {/* <div hidden={addHidden}>
-          <input
-            type="text"
-            placeholder="Enter fruit..."
-      </div>
         
-      <div hidden={addHiddle} >
-
-        <Grid container justifyContent="flex-end">
-        <br></br>
-        <TextField
-            id="outlined-basic"
-            label="Enter fruit..."
-            variant="outlined"
-            onChange={(e) => setNewFruit(e.target.value)}
-            value={newFruit}
-            fullWidth
-          />
-          <button onClick={addFruit}>OK</button>
-          <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
-        </div> */}
-      </div>
+      {/* </div> */}
       {fruits.map((fruit, index) => {
         return (
           <Fruit
