@@ -6,6 +6,8 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Grid from "@mui/material/Grid";
 
 function App2() {
   // const fruits = [
@@ -85,17 +87,32 @@ function App2() {
         <button className="btnAdd" onClick={() => setAddHiddle(!addHiddle)}>
           Add
         </button>
-        <div hidden={addHiddle}>
-          <input
-            type="text"
-            placeholder="Enter fruit..."
+      </div>
+        
+      <div hidden={addHiddle} >
+
+        <Grid container justifyContent="flex-end">
+        <br></br>
+        <TextField
+            id="outlined-basic"
+            label="Enter fruit..."
+            variant="outlined"
             onChange={(e) => setNewFruit(e.target.value)}
             value={newFruit}
+            fullWidth
           />
-          <button onClick={addFruit}>OK</button>
-          <button onClick={() => setAddHiddle(!addHiddle)}>Cancel</button>
+        </Grid>
+        
+          <Grid container justifyContent="flex-end">
+            <Button variant="contained" fullWidth onClick={addFruit}>OK</Button>
+          
+            <Button variant="outlined"  fullWidth onClick={() => setAddHiddle(!addHiddle)}>Cancel</Button>
+          </Grid>
+          
+
+
         </div>
-      </div>
+      
       {fruits.map((fruit) => {
         return (
           <Card sx={{ maxWidth: 345 , mb: 2}} >
