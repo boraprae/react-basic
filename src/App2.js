@@ -8,21 +8,10 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 function App2() {
-  // const fruits = [
-  //   { name: "banana", id: 100 },
-  //   { name: "apple", id: 101 },
-  //   { name: "orange", id: 102 },
-  // ];
-  // //   return fruits.map((fruit, index) => {
-  // //     // return <h1 key={index}>{fruit}</h1>;
-
-  // //   });
-  // fruits.filter((fruit, index) => {
-  //   return fruit === "apple";
-  // });
-  let [counter, setCounter] = React.useState(0);
-  let [counterStatus, setCounterStatus] = React.useState(false);
-  let [addHiddle, setAddHiddle] = React.useState(true);
+// state variable to hide/show add and edit dialogs
+  const [addHidden, setAddHidden] = React.useState(true);
+  const [editHidden, setEditHidden] = React.useState(true);
+  // state variable for new item
   let [newFruit, setNewFruit] = React.useState("");
 
   const intitialState = [
@@ -31,18 +20,9 @@ function App2() {
     { name: "orange", id: 102, picture: "/images/orange.jpg" },
   ];
   const [fruits, setFruits] = React.useState(intitialState);
-
-  const increase = () => {
-    setCounter(counter + 1);
-    if (counter === 4) {
-      setCounterStatus(true);
-    }
-  };
-
-  const reset = () => {
-    setCounter(0);
-    setCounterStatus(false);
-  };
+  // state variable to keep selected fruit index in array and fruit name
+  const [fruitIndex, setFruitIndex] = React.useState(0);
+  const [editFruitName, setEditFruitName] = React.useState("");
 
   const deleteFruit = (id) => {
     const newData = fruits.filter((fruit, index) => {
@@ -51,41 +31,60 @@ function App2() {
     setFruits(newData);
   };
 
-  const editFruit = () => {
-    const newData = fruits.map((fruit, index) => {
-      return { ...fruit, name: "fruitName" };
-    });
-    setFruits(newData);
-    console.log(newData);
+  // ========== Add item ===========
+  const addFruit = () => {
+    // console.log(newFruit);
+    // clone fruit array
+    let newFruits = [...fruits];
+    // create object of new fruit
+    const item = {
+      name: newFruit,
+      image: "apple.png",
+      id: newFruits.length + 101,
+    };
+    // add new item to array
+    newFruits.push(item);
+
+    // const test = [...fruits, {name: newFruit, image: 'apple.png', id: newFruits.length + 101}];
+    // update state
+    setFruits(newFruits);
+    setNewFruit("");
   };
 
-  const addFruit = () => {
-    //console.log(newFruit);
-    const newFruits = [...fruits];
-    newFruits.push({
-      name: newFruit,
-      picture: "/images/banana.jpg",
-      id: newFruits.length + 101,
-    });
+   // ========== Prepare to Edit item ===========
+   const beforeEdit = (index, fruitName) => {
+    setEditHidden(!editHidden);
+    setFruitIndex(index);
+    setEditFruitName(fruitName);
+  }
+
+  // ========== Edit item ===========
+  const editFruit = () => {
+    let newFruits = [...fruits];
+    newFruits[fruitIndex].name = editFruitName;
     setFruits(newFruits);
-  };
+    setEditHidden(true);
+  }
 
   return (
     <>
-      {/* <button onClick={increase} disabled={counterStatus}>
-        Click
-      </button>
-      <button onClick={reset}>Reset</button>
-      <h1>Click me now :D</h1>
-      <p>Counter = {counter}</p>
-      <br />
-      <br /> */}
-      <h1>Fruits</h1>
+ <h1>Fruit shop management system</h1>
       <div className="btnAddLayout">
-        <button className="btnAdd" onClick={() => setAddHiddle(!addHiddle)}>
+        <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
           Add
         </button>
-        <div hidden={addHiddle}>
+        {!addHidden && 
+          <>
+            <input type="text"
+              placeholder="Enter fruit..."
+              value={newFruit}
+              onChange={(e) => setNewFruit(e.target.value)}
+              required
+            />
+            <button onClick={addFruit}>OK</button>
+            <button onClick={() => { setAddHidden(!addHidden); setNewFruit('') }}>Cancel</button>
+          </>}
+        {/* <div hidden={addHidden}>
           <input
             type="text"
             placeholder="Enter fruit..."
@@ -93,12 +92,12 @@ function App2() {
             value={newFruit}
           />
           <button onClick={addFruit}>OK</button>
-          <button onClick={() => setAddHiddle(!addHiddle)}>Cancel</button>
-        </div>
+          <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
+        </div> */}
       </div>
       {fruits.map((fruit) => {
         return (
-          <Card sx={{ maxWidth: 345 , mb: 2}} >
+          <Card sx={{ maxWidth: 345, mb: 2 }}>
             <CardMedia
               component="img"
               height="140"
@@ -127,8 +126,23 @@ function App2() {
           //   <button onClick={() => deleteFruit(fruit.id)}>Delete</button>
           //   <button onClick={editFruit}>Edit</button>
           // </div>
+          
         );
+
       })}
+
+       {/* ------- Edit dialog  -------*/}
+       <div hidden={editHidden}>
+        <input type="text"
+          placeholder="Enter fruit..."
+          value={editFruitName}
+          onChange={(e) => setEditFruitName(e.target.value)}
+          required
+        />
+        <button onClick={editFruit}>OK</button>
+        <button onClick={() => { setEditHidden(!editHidden); setEditFruitName('') }}>Cancel</button>
+      </div>
+      {/* -------------------------- */}
     </>
   );
 }
