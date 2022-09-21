@@ -7,8 +7,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
 const Fruit = ({ fruit, index, deleteFruit, beforeEdit }) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
-    <Card sx={{ maxWidth: 345 }} key={fruit.id}>
+    <Card sx={{ maxWidth: 345, mb: 2 }} key={fruit.id}>
       <CardMedia
         component="img"
         height="140"
@@ -20,14 +29,19 @@ const Fruit = ({ fruit, index, deleteFruit, beforeEdit }) => {
           {fruit.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          Fruits are an excellent source of essential vitamins and minerals, and
+          they are high in fiber. Fruits also provide a wide range of
+          health-boosting antioxidants, including flavonoids. Eating a diet high
+          in fruits and vegetables can reduce a person's risk of developing
+          heart disease, cancer, inflammation, and diabetes.
         </Typography>
       </CardContent>
       <CardActions>
         <Button
           className="btnEdit"
-          onClick={() => beforeEdit(index, fruit.name)}
+          onClick={() => {
+            beforeEdit(index, fruit.name), handleClickOpen;
+          }}
         >
           Edit
         </Button>

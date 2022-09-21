@@ -1,12 +1,7 @@
 import * as React from "react";
 import "./App.css";
 import Fruit from "./components/Fruit";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+
 
 function App2() {
 // state variable to hide/show add and edit dialogs
