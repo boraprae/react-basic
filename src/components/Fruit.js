@@ -5,6 +5,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { yellow } from '@mui/material/colors';
+
+const color_buttonEdit = yellow[500];
+
 
 const Fruit = ({ fruit, index, deleteFruit, beforeEdit }) => {
   return (
@@ -25,13 +29,28 @@ const Fruit = ({ fruit, index, deleteFruit, beforeEdit }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          className="btnEdit"
+        {/* Edit Button */}
+        <Button color="secondary"
           onClick={() => beforeEdit(index, fruit.name)}
         >
           Edit
         </Button>
-        <Button onClick={() => deleteFruit(fruit.id)}>Delete</Button>
+
+        {/* <Button
+       
+          className="btnEdit"
+          onClick={() => beforeEdit(index, fruit.name)}
+        >
+          Edit
+        </Button> */}
+
+        {/* Delete Button */}
+        <Button color="error"
+          onClick={() => deleteFruit(fruit.id)}
+        >
+          Delete
+        </Button>
+        {/* <Button onClick={() => deleteFruit(fruit.id)}>Delete</Button> */}
       </CardActions>
     </Card>
   );
