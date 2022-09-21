@@ -1,5 +1,6 @@
 import * as React from "react";
 import "./App.css";
+import Fruit from "./components/Fruit";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -15,9 +16,9 @@ function App2() {
   let [newFruit, setNewFruit] = React.useState("");
 
   const intitialState = [
-    { name: "banana", id: 100, picture: "/images/banana.jpg" },
-    { name: "apple", id: 101, picture: "/images/apple.jpg" },
-    { name: "orange", id: 102, picture: "/images/orange.jpg" },
+    { name: "banana", id: 100, image: "/banana.jpg" },
+    { name: "apple", id: 101, image: "/apple.jpg" },
+    { name: "orange", id: 102, image: "/orange.jpg" },
   ];
   const [fruits, setFruits] = React.useState(intitialState);
   // state variable to keep selected fruit index in array and fruit name
@@ -37,19 +38,15 @@ function App2() {
     // clone fruit array
     let newFruits = [...fruits];
     // create object of new fruit
-    const item = {
-      name: newFruit,
-      image: "apple.png",
-      id: newFruits.length + 101,
-    };
+    const item = { name: newFruit, image: 'apple.png', id: newFruits.length + 101 };
     // add new item to array
     newFruits.push(item);
 
     // const test = [...fruits, {name: newFruit, image: 'apple.png', id: newFruits.length + 101}];
     // update state
     setFruits(newFruits);
-    setNewFruit("");
-  };
+    setNewFruit('');
+  }
 
    // ========== Prepare to Edit item ===========
    const beforeEdit = (index, fruitName) => {
@@ -95,29 +92,9 @@ function App2() {
           <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
         </div> */}
       </div>
-      {fruits.map((fruit) => {
+      {fruits.map((fruit, index) => {
         return (
-          <Card sx={{ maxWidth: 345, mb: 2 }}>
-            <CardMedia
-              component="img"
-              height="140"
-              image={fruit.picture}
-              alt={fruit.name}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                {fruit.name}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Lizards are a widespread group of squamate reptiles, with over
-                6,000 species, ranging across all continents except Antarctica
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <button onClick={() => deleteFruit(fruit.id)}>Delete</button>
-              <button onClick={editFruit}>Edit</button>
-            </CardActions>
-          </Card>
+          <Fruit fruit={fruit} index={index} deleteFruit={deleteFruit} beforeEdit={beforeEdit} />
           // <div className="fruit-item" key={fruit.id}>
           //   <h2>{fruit.name}</h2>
           //   <div className="avatar">
