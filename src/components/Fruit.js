@@ -40,7 +40,7 @@ const Fruit = ({ fruit, index, deleteFruit, beforeEdit }) => {
         <Button
           className="btnEdit"
           onClick={() => {
-            beforeEdit(index, fruit.name), handleClickOpen;
+            beforeEdit(index, fruit.name);
           }}
         >
           Edit
