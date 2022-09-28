@@ -5,6 +5,7 @@ import App from './AppFruit'
 import App2 from './App2';
 import reportWebVitals from './reportWebVitals';
 import HelloComponent from './components/HelloComponent'
+import AppVer from './AppVer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 //!Create functional component

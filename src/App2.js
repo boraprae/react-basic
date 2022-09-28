@@ -1,14 +1,9 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Fruit from "./components/Fruit";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
 function App2() {
@@ -17,13 +12,23 @@ function App2() {
   const [editHidden, setEditHidden] = React.useState(true);
   // state variable for new item
   let [newFruit, setNewFruit] = React.useState("");
+  const [fruits, setFruits] = React.useState([]);
 
-  const intitialState = [
-    { name: "banana", id: 100, image: "/banana.jpg" },
-    { name: "apple", id: 101, image: "/apple.jpg" },
-    { name: "orange", id: 102, image: "/orange.jpg" },
-  ];
-  const [fruits, setFruits] = React.useState(intitialState);
+  useEffect(() => {
+    // alert("Update");
+    fetch("http://localhost:9000/fruits")
+      .then((response) => {
+        if (response.ok) {
+          console.log("data update");
+          return response.json();
+        }
+        //response is not ok
+        throw Error("Server Erorr, Maybe denies access!");
+      })
+      .then((json) => setFruits(json))
+      .catch((err) => console.log(err));
+  }, []);
+
   // state variable to keep selected fruit index in array and fruit name
   const [fruitIndex, setFruitIndex] = React.useState(0);
   const [editFruitName, setEditFruitName] = React.useState("");
@@ -77,45 +82,31 @@ function App2() {
         <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
           Add
         </button>
-        {!addHidden && (
-          <>
-            <Grid container justifyContent="flex-end">
-              <br></br>
-              <TextField
-                id="outlined-basic"
-                label="Enter fruit..."
-                variant="outlined"
-                onChange={(e) => setNewFruit(e.target.value)}
-                value={newFruit}
-                fullWidth
-              />
-              <button onClick={addFruit}>OK</button>
-              <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
-          </Grid>
-          </>
-        )}
-        {/* <div hidden={addHidden}>
-          <input
-            type="text"
-            placeholder="Enter fruit..."
       </div>
-        
-      <div hidden={addHiddle} >
+      {!addHidden && (
+        <>
+          <Grid container justifyContent="flex-end">
+            <br></br>
+            <TextField
+              id="outlined-basic"
+              label="Enter fruit..."
+              variant="outlined"
+              onChange={(e) => setNewFruit(e.target.value)}
+              value={newFruit}
+              fullWidth
+            />
 
-        <Grid container justifyContent="flex-end">
-        <br></br>
-        <TextField
-            id="outlined-basic"
-            label="Enter fruit..."
-            variant="outlined"
-            onChange={(e) => setNewFruit(e.target.value)}
-            value={newFruit}
-            fullWidth
-          />
-          <button onClick={addFruit}>OK</button>
-          <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
-        </div> */}
-      </div>
+            <Button variant="contained" onClick={addFruit}>
+              OK
+            </Button>
+            <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>
+              Cancel
+            </Button>
+          </Grid>
+        </>
+      )}
+
+      {/* </div> */}
       {fruits.map((fruit, index) => {
         return (
           <Fruit
@@ -137,22 +128,30 @@ function App2() {
 
       {/* ------- Edit dialog  -------*/}
       <div hidden={editHidden}>
-        <input
-          type="text"
+        <TextField
+          id="outlined-basic"
+          label="Fruit Name"
+          variant="outlined"
           placeholder="Enter fruit..."
           value={editFruitName}
           onChange={(e) => setEditFruitName(e.target.value)}
+          color="success"
           required
         />
-        <button onClick={editFruit}>OK</button>
-        <button
+
+        <Button onClick={editFruit} variant="contained">
+          OK
+        </Button>
+        <Button
+          color="error"
+          variant="contained"
           onClick={() => {
             setEditHidden(!editHidden);
             setEditFruitName("");
           }}
         >
           Cancel
-        </button>
+        </Button>
       </div>
       {/* -------------------------- */}
     </>
