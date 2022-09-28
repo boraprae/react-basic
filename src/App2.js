@@ -73,7 +73,7 @@ function App2() {
     // create object of new fruit
     const item = {
       name: newFruit,
-      image: "/images/apple.png",
+      image: "/apple.jpg",
       id: newFruits.length + 101,
     };
     // add new item to array
@@ -81,8 +81,8 @@ function App2() {
     axios
       .post(`http://localhost:9000/fruits`, {
         name: newFruit,
-        image: "/apple.png",
-        id: newFruits.length + 201,
+        image: "/apple.jpg",
+        id: newFruits.length + 101,
       })
       .then((res) => {
         console.log(res);
