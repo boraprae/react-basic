@@ -34,6 +34,14 @@ function App2() {
     //   return fruit.id !== id;
     // });
     // setFruits(newData);
+    axios.delete(`http://localhost:9000/fruits/${id}`)
+    .then(response => {
+      const newData = fruits.filter((fruit, index) => {
+          return fruit.id !== id;
+        });
+      setFruits(newData);
+    })
+    .catch((err) => { console.log(err)});
   };
 
   // ========== Add item ===========
@@ -110,6 +118,7 @@ function App2() {
             index={index}
             deleteFruit={deleteFruit}
             beforeEdit={beforeEdit}
+            key={fruit.id}
           />
           // <div className="fruit-item" key={fruit.id}>
           //   <h2>{fruit.name}</h2>
