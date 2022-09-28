@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Fruit from "./components/Fruit";
 import TextField from "@mui/material/TextField";
@@ -11,13 +12,23 @@ function App2() {
   const [editHidden, setEditHidden] = React.useState(true);
   // state variable for new item
   let [newFruit, setNewFruit] = React.useState("");
+  const [fruits, setFruits] = React.useState([]);
 
-  const intitialState = [
-    { name: "banana", id: 100, image: "/banana.jpg" },
-    { name: "apple", id: 101, image: "/apple.jpg" },
-    { name: "orange", id: 102, image: "/orange.jpg" },
-  ];
-  const [fruits, setFruits] = React.useState(intitialState);
+  useEffect(() => {
+    // alert("Update");
+    fetch("http://localhost:9000/fruits")
+      .then((response) => {
+        if (response.ok) {
+          console.log("data update");
+          return response.json();
+        }
+        //response is not ok
+        throw Error("Server Erorr, Maybe denies access!");
+      })
+      .then((json) => setFruits(json))
+      .catch((err) => console.log(err));
+  }, []);
+
   // state variable to keep selected fruit index in array and fruit name
   const [fruitIndex, setFruitIndex] = React.useState(0);
   const [editFruitName, setEditFruitName] = React.useState("");
