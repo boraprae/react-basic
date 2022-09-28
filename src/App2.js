@@ -5,6 +5,7 @@ import Fruit from "./components/Fruit";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import axios from 'axios';
 
 function App2() {
   // state variable to hide/show add and edit dialogs
@@ -15,29 +16,32 @@ function App2() {
   const [fruits, setFruits] = React.useState([]);
 
   useEffect(() => {
-    // alert("Update");
-    fetch("http://localhost:9000/fruits")
-      .then((response) => {
-        if (response.ok) {
-          console.log("data update");
-          return response.json();
-        }
-        //response is not ok
-        throw Error("Server Erorr, Maybe denies access!");
+    axios.get(`http://localhost:9000/fruits`)
+      .then(response => {
+        console.log(response.data);
+        setFruits(response.data);
       })
-      .then((json) => setFruits(json))
-      .catch((err) => console.log(err));
+      .catch((err) => { console.log(err)});
   }, []);
-
+  console.log(fruits);
   // state variable to keep selected fruit index in array and fruit name
   const [fruitIndex, setFruitIndex] = React.useState(0);
   const [editFruitName, setEditFruitName] = React.useState("");
 
   const deleteFruit = (id) => {
-    const newData = fruits.filter((fruit, index) => {
-      return fruit.id !== id;
-    });
-    setFruits(newData);
+    // get("http://localhost:9000/fruits/" + id)
+    // const newData = fruits.filter((fruit, index) => {
+    //   return fruit.id !== id;
+    // });
+    // setFruits(newData);
+    axios.delete(`http://localhost:9000/fruits/${id}`)
+    .then(response => {
+      const newData = fruits.filter((fruit, index) => {
+          return fruit.id !== id;
+        });
+      setFruits(newData);
+    })
+    .catch((err) => { console.log(err)});
   };
 
   // ========== Add item ===========
@@ -114,6 +118,7 @@ function App2() {
             index={index}
             deleteFruit={deleteFruit}
             beforeEdit={beforeEdit}
+            key={fruit.id}
           />
           // <div className="fruit-item" key={fruit.id}>
           //   <h2>{fruit.name}</h2>
