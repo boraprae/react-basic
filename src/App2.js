@@ -5,7 +5,10 @@ import Fruit from "./components/Fruit";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import axios from "axios";
+import axios from 'axios';
+import { switchClasses } from "@mui/material";
+import Swal from 'sweetalert2'
+
 
 function App2() {
   // state variable to hide/show add and edit dialogs
@@ -22,9 +25,7 @@ function App2() {
         console.log(response.data);
         setFruits(response.data);
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((err) => { console.log(err) });
   }, []);
   console.log(fruits);
   // state variable to keep selected fruit index in array and fruit name
@@ -32,22 +33,37 @@ function App2() {
   const [editFruitName, setEditFruitName] = React.useState("");
 
   const deleteFruit = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your fruit has been deleted.',
+          'success'
+        )
+        axios.delete(`http://localhost:9000/fruits/${id}`)
+          .then(response => {
+            const newData = fruits.filter((fruit, index) => {
+              return fruit.id !== id;
+            });
+            setFruits(newData);
+          })
+          .catch((err) => { console.log(err) });
+      }
+    })
+
     // get("http://localhost:9000/fruits/" + id)
     // const newData = fruits.filter((fruit, index) => {
     //   return fruit.id !== id;
     // });
     // setFruits(newData);
-    axios
-      .delete(`http://localhost:9000/fruits/${id}`)
-      .then((response) => {
-        const newData = fruits.filter((fruit, index) => {
-          return fruit.id !== id;
-        });
-        setFruits(newData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   // ========== Add item ===========
