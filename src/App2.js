@@ -3,14 +3,6 @@ import "./App.css";
 import Fruit from "./components/Fruit";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 
 function App2() {
@@ -79,29 +71,30 @@ function App2() {
         <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
           Add
         </button>
+      </div>
+      {!addHidden && (
+        <>
+          <Grid container justifyContent="flex-end">
+            <br></br>
+            <TextField
+              id="outlined-basic"
+              label="Enter fruit..."
+              variant="outlined"
+              onChange={(e) => setNewFruit(e.target.value)}
+              value={newFruit}
+              fullWidth
+            />
 
-        </div>
-        {!addHidden && (
-          <>
-            <Grid container justifyContent="flex-end">
-              <br></br>
-              <TextField
-                id="outlined-basic"
-                label="Enter fruit..."
-                variant="outlined"
-                onChange={(e) => setNewFruit(e.target.value)}
-                value={newFruit}
-                fullWidth
-              />
-              
-              <Button variant="contained" onClick={addFruit}>OK</Button>
-              <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>Cancel</Button>
-              
-              
+            <Button variant="contained" onClick={addFruit}>
+              OK
+            </Button>
+            <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>
+              Cancel
+            </Button>
           </Grid>
-          </>
-        )}
-        
+        </>
+      )}
+
       {/* </div> */}
       {fruits.map((fruit, index) => {
         return (
@@ -139,7 +132,7 @@ function App2() {
           OK
         </Button>
         <Button
-        color="error"
+          color="error"
           variant="contained"
           onClick={() => {
             setEditHidden(!editHidden);
