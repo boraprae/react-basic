@@ -1,26 +1,34 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Fruit from "./components/Fruit";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
 
 function App2() {
-// state variable to hide/show add and edit dialogs
+  // state variable to hide/show add and edit dialogs
   const [addHidden, setAddHidden] = React.useState(true);
   const [editHidden, setEditHidden] = React.useState(true);
   // state variable for new item
   let [newFruit, setNewFruit] = React.useState("");
+  const [fruits, setFruits] = React.useState([]);
 
-  const intitialState = [
-    { name: "banana", id: 100, image: "/banana.jpg" },
-    { name: "apple", id: 101, image: "/apple.jpg" },
-    { name: "orange", id: 102, image: "/orange.jpg" },
-  ];
-  const [fruits, setFruits] = React.useState(intitialState);
+  useEffect(() => {
+    // alert("Update");
+    fetch("http://localhost:9000/fruits")
+      .then((response) => {
+        if (response.ok) {
+          console.log("data update");
+          return response.json();
+        }
+        //response is not ok
+        throw Error("Server Erorr, Maybe denies access!");
+      })
+      .then((json) => setFruits(json))
+      .catch((err) => console.log(err));
+  }, []);
+
   // state variable to keep selected fruit index in array and fruit name
   const [fruitIndex, setFruitIndex] = React.useState(0);
   const [editFruitName, setEditFruitName] = React.useState("");
@@ -38,22 +46,26 @@ function App2() {
     // clone fruit array
     let newFruits = [...fruits];
     // create object of new fruit
-    const item = { name: newFruit, image: 'apple.png', id: newFruits.length + 101 };
+    const item = {
+      name: newFruit,
+      image: "apple.png",
+      id: newFruits.length + 101,
+    };
     // add new item to array
     newFruits.push(item);
 
     // const test = [...fruits, {name: newFruit, image: 'apple.png', id: newFruits.length + 101}];
     // update state
     setFruits(newFruits);
-    setNewFruit('');
-  }
+    setNewFruit("");
+  };
 
-   // ========== Prepare to Edit item ===========
-   const beforeEdit = (index, fruitName) => {
+  // ========== Prepare to Edit item ===========
+  const beforeEdit = (index, fruitName) => {
     setEditHidden(!editHidden);
     setFruitIndex(index);
     setEditFruitName(fruitName);
-  }
+  };
 
   // ========== Edit item ===========
   const editFruit = () => {
@@ -61,40 +73,48 @@ function App2() {
     newFruits[fruitIndex].name = editFruitName;
     setFruits(newFruits);
     setEditHidden(true);
-  }
+  };
 
   return (
     <>
- <h1>Fruit shop management system</h1>
+      <h1>Fruit shop management system</h1>
       <div className="btnAddLayout">
         <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
           Add
         </button>
-        {!addHidden && 
-          <>
-            <input type="text"
-              placeholder="Enter fruit..."
-              value={newFruit}
-              onChange={(e) => setNewFruit(e.target.value)}
-              required
-            />
-            <button onClick={addFruit}>OK</button>
-            <button onClick={() => { setAddHidden(!addHidden); setNewFruit('') }}>Cancel</button>
-          </>}
-        {/* <div hidden={addHidden}>
-          <input
-            type="text"
-            placeholder="Enter fruit..."
-            onChange={(e) => setNewFruit(e.target.value)}
-            value={newFruit}
-          />
-          <button onClick={addFruit}>OK</button>
-          <button onClick={() => setAddHidden(!addHidden)}>Cancel</button>
-        </div> */}
       </div>
+      {!addHidden && (
+        <>
+          <Grid container justifyContent="flex-end">
+            <br></br>
+            <TextField
+              id="outlined-basic"
+              label="Enter fruit..."
+              variant="outlined"
+              onChange={(e) => setNewFruit(e.target.value)}
+              value={newFruit}
+              fullWidth
+            />
+
+            <Button variant="contained" onClick={addFruit}>
+              OK
+            </Button>
+            <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>
+              Cancel
+            </Button>
+          </Grid>
+        </>
+      )}
+
+      {/* </div> */}
       {fruits.map((fruit, index) => {
         return (
-          <Fruit fruit={fruit} index={index} deleteFruit={deleteFruit} beforeEdit={beforeEdit} />
+          <Fruit
+            fruit={fruit}
+            index={index}
+            deleteFruit={deleteFruit}
+            beforeEdit={beforeEdit}
+          />
           // <div className="fruit-item" key={fruit.id}>
           //   <h2>{fruit.name}</h2>
           //   <div className="avatar">
@@ -103,21 +123,35 @@ function App2() {
           //   <button onClick={() => deleteFruit(fruit.id)}>Delete</button>
           //   <button onClick={editFruit}>Edit</button>
           // </div>
-          
         );
-
       })}
 
-       {/* ------- Edit dialog  -------*/}
-       <div hidden={editHidden}>
-        <input type="text"
+      {/* ------- Edit dialog  -------*/}
+      <div hidden={editHidden}>
+        <TextField
+          id="outlined-basic"
+          label="Fruit Name"
+          variant="outlined"
           placeholder="Enter fruit..."
           value={editFruitName}
           onChange={(e) => setEditFruitName(e.target.value)}
+          color="success"
           required
         />
-        <button onClick={editFruit}>OK</button>
-        <button onClick={() => { setEditHidden(!editHidden); setEditFruitName('') }}>Cancel</button>
+
+        <Button onClick={editFruit} variant="contained">
+          OK
+        </Button>
+        <Button
+          color="error"
+          variant="contained"
+          onClick={() => {
+            setEditHidden(!editHidden);
+            setEditFruitName("");
+          }}
+        >
+          Cancel
+        </Button>
       </div>
       {/* -------------------------- */}
     </>
