@@ -5,19 +5,23 @@ import Fruit from "../components/Fruit";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import axios from 'axios';
+import axios from "axios";
 import { switchClasses } from "@mui/material";
-import Swal from 'sweetalert2'
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-
+import Swal from "sweetalert2";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AddFruits from "./AddFruits";
+import { useNavigate, useParams } from "react-router-dom";
 
 function App2() {
   // state variable to hide/show add and edit dialogs
   const [addHidden, setAddHidden] = React.useState(true);
   const [editHidden, setEditHidden] = React.useState(true);
   // state variable for new item
-  let [newFruit, setNewFruit] = React.useState("");
+  // let [newFruit, setNewFruit] = React.useState("");
   const [fruits, setFruits] = React.useState([]);
+
+  const navigate = useNavigate();
+  const params = useParams();
 
   useEffect(() => {
     axios
@@ -26,7 +30,9 @@ function App2() {
         console.log(response.data);
         setFruits(response.data);
       })
-      .catch((err) => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   console.log(fruits);
   // state variable to keep selected fruit index in array and fruit name
@@ -35,30 +41,29 @@ function App2() {
 
   const deleteFruit = (id) => {
     Swal.fire({
-      title: 'Are you sure?',
+      title: "Are you sure?",
       text: "You won't be able to revert this!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Deleted!',
-          'Your fruit has been deleted.',
-          'success'
-        )
-        axios.delete(`http://localhost:9000/fruits/${id}`)
-          .then(response => {
+        Swal.fire("Deleted!", "Your fruit has been deleted.", "success");
+        axios
+          .delete(`http://localhost:9000/fruits/${id}`)
+          .then((response) => {
             const newData = fruits.filter((fruit, index) => {
               return fruit.id !== id;
             });
             setFruits(newData);
           })
-          .catch((err) => { console.log(err) });
+          .catch((err) => {
+            console.log(err);
+          });
       }
-    })
+    });
 
     // get("http://localhost:9000/fruits/" + id)
     // const newData = fruits.filter((fruit, index) => {
@@ -66,33 +71,35 @@ function App2() {
     // });
     // setFruits(newData);
   };
-
+  
   // ========== Add item ===========
-  const addFruit = () => {
-    // clone fruit array
-    let newFruits = [...fruits];
-    // create object of new fruit
-    const item = {
-      name: newFruit,
-      image: "/apple.jpg",
-      id: newFruits.length + 101,
-    };
-    // add new item to array
-    newFruits.push(item);
-    axios
-      .post(`http://localhost:9000/fruits`, {
-        name: newFruit,
-        image: "/apple.jpg",
-        id: newFruits.length + 101,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-      });
-    // update state
-    setFruits(newFruits);
-    setNewFruit("");
-  };
+  // const addFruit = () => {
+  //   console.log(params.name);
+  //   // clone fruit array
+  //   let newFruits = [...fruits];
+  //   // create object of new fruit
+  //   const item = {
+  //     name: newFruit,
+  //     image: "/apple.jpg",
+  //     id: newFruits.length + 101,
+  //   };
+  //   // add new item to array
+  //   newFruits.push(item);
+  //   axios
+  //     .post(`http://localhost:9000/fruits`, {
+  //       name: newFruit,
+  //       image: "/apple.jpg",
+  //       id: newFruits.length + 101,
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       console.log(res.data);
+  //     });
+  //   // update state
+  //   setFruits(newFruits);
+  //   setNewFruit("");
+  //   navigate("/");
+  // };
 
   // ========== Prepare to Edit item ===========
   const beforeEdit = (index, fruitName) => {
@@ -102,43 +109,21 @@ function App2() {
   };
 
   // ========== Edit item ===========
-  const editFruit = () => {
-    let newFruits = [...fruits];
-    newFruits[fruitIndex].name = editFruitName;
-    setFruits(newFruits);
-    setEditHidden(true);
-  };
+  // const editFruit = () => {
+  //   let newFruits = [...fruits];
+  //   newFruits[fruitIndex].name = editFruitName;
+  //   setFruits(newFruits);
+  //   setEditHidden(true);
+  // };
 
   return (
     <>
       <h1>Fruit shop management system</h1>
       <div className="btnAddLayout">
-        <button className="btnAdd" onClick={() => setAddHidden(!addHidden)}>
+        <button className="btnAdd" onClick={() => navigate("/addFruits")}>
           Add
         </button>
       </div>
-      {!addHidden && (
-        <>
-          <Grid container justifyContent="flex-end">
-            <br></br>
-            <TextField
-              id="outlined-basic"
-              label="Enter fruit..."
-              variant="outlined"
-              onChange={(e) => setNewFruit(e.target.value)}
-              value={newFruit}
-              fullWidth
-            />
-
-            <Button variant="contained" onClick={addFruit}>
-              OK
-            </Button>
-            <Button variant="outlined" onClick={() => setAddHidden(!addHidden)}>
-              Cancel
-            </Button>
-          </Grid>
-        </>
-      )}
 
       {/* </div> */}
       {fruits.map((fruit, index) => {
@@ -163,7 +148,7 @@ function App2() {
 
       {/* ------- Edit dialog  -------*/}
       <div hidden={editHidden}>
-        <TextField
+        {/* <TextField
           id="outlined-basic"
           label="Fruit Name"
           variant="outlined"
@@ -172,9 +157,9 @@ function App2() {
           onChange={(e) => setEditFruitName(e.target.value)}
           color="success"
           required
-        />
+        /> */}
 
-        <Button onClick={editFruit} variant="contained">
+        {/* <Button onClick={editFruit} variant="contained">
           OK
         </Button>
         <Button
@@ -186,7 +171,7 @@ function App2() {
           }}
         >
           Cancel
-        </Button>
+        </Button> */}
       </div>
       {/* -------------------------- */}
     </>
