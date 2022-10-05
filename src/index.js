@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './AppFruit'
+import App from './pages/App'
 import App2 from './App2';
 import reportWebVitals from './reportWebVitals';
 import HelloComponent from './components/HelloComponent'

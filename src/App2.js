@@ -8,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import axios from 'axios';
 import { switchClasses } from "@mui/material";
 import Swal from 'sweetalert2'
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 
 
 function App2() {
