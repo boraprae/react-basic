@@ -53,7 +53,7 @@ function AddFruits() {
     // update state
     setFruits(newFruits);
     setNewFruit("");
-    navigate("/", , {replace: true});
+    navigate("/", {replace: true});
   };
 
   return (
