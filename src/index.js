@@ -6,6 +6,8 @@ import App2 from './projectPages/App2';
 import reportWebVitals from './reportWebVitals';
 import HelloComponent from './components/HelloComponent'
 import AppVer from './AppVer';
+import { Routes } from 'react-router-dom';
+import Router from './projectPages/Router';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 //!Create functional component
@@ -23,7 +25,8 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 //<HelloComponent/>
 //  <App/>
-  <App2/>
+  // <App2/>
+  <Router/>
 );
 
 // If you want to start measuring performance in your app, pass a function
