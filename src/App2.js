@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import axios from 'axios';
 
+
 function App2() {
   // state variable to hide/show add and edit dialogs
   const [addHidden, setAddHidden] = React.useState(true);
@@ -14,14 +15,14 @@ function App2() {
   // state variable for new item
   let [newFruit, setNewFruit] = React.useState("");
   const [fruits, setFruits] = React.useState([]);
-
+  
   useEffect(() => {
     axios.get(`http://localhost:9000/fruits`)
       .then(response => {
         console.log(response.data);
         setFruits(response.data);
       })
-      .catch((err) => { console.log(err)});
+      .catch((err) => { console.log(err) });
   }, []);
   console.log(fruits);
   // state variable to keep selected fruit index in array and fruit name
@@ -35,33 +36,20 @@ function App2() {
     // });
     // setFruits(newData);
     axios.delete(`http://localhost:9000/fruits/${id}`)
-    .then(response => {
-      const newData = fruits.filter((fruit, index) => {
+      .then(response => {
+        const newData = fruits.forEach((fruit, index) => {
           return fruit.id !== id;
         });
-      setFruits(newData);
-    })
-    .catch((err) => { console.log(err)});
+        setFruits(newData);
+      })
+      .catch((err) => { console.log(err) });
   };
 
   // ========== Add item ===========
-  const addFruit = () => {
-    // console.log(newFruit);
-    // clone fruit array
-    let newFruits = [...fruits];
-    // create object of new fruit
-    const item = {
-      name: newFruit,
-      image: "apple.png",
-      id: newFruits.length + 101,
-    };
-    // add new item to array
-    newFruits.push(item);
-
-    // const test = [...fruits, {name: newFruit, image: 'apple.png', id: newFruits.length + 101}];
-    // update state
-    setFruits(newFruits);
-    setNewFruit("");
+  const addFruit = (id) => {
+    axios.post(`http://localhost:9000/fruits/${id}`, {
+    
+    })
   };
 
   // ========== Prepare to Edit item ===========
