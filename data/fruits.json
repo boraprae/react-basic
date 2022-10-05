@@ -16,24 +16,9 @@
       "image": "/orange.jpg"
     },
     {
-      "name": "ewrew",
-      "image": "/images/apple.png",
-      "id": 206
-    },
-    {
-      "name": "rr",
+      "name": "Pineapple",
       "image": "/apple.jpg",
-      "id": 106
-    },
-    {
-      "name": "Tonkla Apple",
-      "image": "/apple.jpg",
-      "id": 107
-    },
-    {
-      "name": "Paramet Apple Shit",
-      "image": "/apple.jpg",
-      "id": 108
+      "id": 105
     }
   ]
 }

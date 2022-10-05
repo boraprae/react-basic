@@ -71,7 +71,7 @@ function App2() {
     // });
     // setFruits(newData);
   };
-  
+
   // ========== Add item ===========
   // const addFruit = () => {
   //   console.log(params.name);
@@ -120,7 +120,7 @@ function App2() {
     <>
       <h1>Fruit shop management system</h1>
       <div className="btnAddLayout">
-        <button className="btnAdd" onClick={() => navigate("/addFruits")}>
+        <button className="btnAdd" onClick={() => navigate("/addFruits", {replace: true})}>
           Add
         </button>
       </div>
